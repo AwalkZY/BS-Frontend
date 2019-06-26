@@ -1,0 +1,25 @@
+.main{
+    margin-top: 12px;
+}
+.display{
+    margin: 24px 12px 0 12px;
+}
+.mainTitle{
+    text-align: center;
+}
+.coverImg{
+    height: inherit;
+}
+.verticalMiddle{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+@media screen and (max-width: 768px){
+    .display{
+        margin: 24px -24px 0 -24px;
+    }
+    .hiddenSm{
+        display: none !important;
+    }
+}
