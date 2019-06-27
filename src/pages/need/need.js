@@ -230,10 +230,7 @@ class Need extends Component {
                         <Option value="category">类别</Option>
                     </Select></Col>
                     <Col xs={15} sm={18} md={14} lg={18}>
-                        <Input defaultValue="26888888" key={0}
-                               suffix={<Tooltip title="Extra information">
-                                   <Icon type="info-circle" style={{width: "100%", color: 'rgba(0,0,0,.45)'}}/>
-                               </Tooltip>}/>
+                        <Input key={0}/>
                     </Col>
                     <Col xs={24} sm={24} md={7} lg={4}>
                         <ButtonGroup style={{width: "100%"}}>

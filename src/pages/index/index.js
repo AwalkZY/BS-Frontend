@@ -22,7 +22,6 @@ const {Option} = Select;
 
 class Index extends Component {
     state = {
-        tip: "",
         field: "",
         visible: false,
         loading: false
@@ -47,6 +46,12 @@ class Index extends Component {
         this.bookDrawer = ref
     };
 
+    onChange = e => {
+        this.setState({
+            field: e.value
+        })
+    };
+
     render() {
         return (
             <div className={style.main}>
@@ -55,17 +60,14 @@ class Index extends Component {
                 </Typography>
                 <Divider/>
                 <InputGroup><Row>
-                    <Col xs={9} sm={6} md={3} lg={2}><Select defaultValue="name" style={{width: "100%"}}>
+                    <Col xs={9} sm={6} md={3} lg={2}><Select defaultValue="name" onChange={this.onChange} style={{width: "100%"}}>
                         <Option value="name">书名</Option>
                         <Option value="isbn">ISBN</Option>
                         <Option value="price">价格</Option>
                         <Option value="category">类别</Option>
                     </Select></Col>
                     <Col xs={15} sm={18} md={14} lg={18}>
-                        <Input defaultValue="26888888" key={1}
-                               suffix={<Tooltip title="Extra information">
-                                   <Icon type="info-circle" style={{width: "100%", color: 'rgba(0,0,0,.45)'}}/>
-                               </Tooltip>}/>
+                        <Input key={1}/>
                     </Col>
                     <Col xs={24} sm={24} md={7} lg={4}>
                         <ButtonGroup style={{width: "100%"}}>
