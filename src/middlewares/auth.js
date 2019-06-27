@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {Route, withRouter} from 'react-router-dom';
+import {connect} from "react-redux";
 
 class PrivateRoute extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // isAuthenticated: !!window.sessionStorage.getItem("token")
-            isAuthenticated: true
+            isAuthenticated: !!window.sessionStorage.getItem("token") || !!this.props.token
         }
     }
 
@@ -25,4 +25,8 @@ class PrivateRoute extends Component {
     }
 }
 
-export default withRouter(PrivateRoute);
+const mapStateToProps = state => ({
+    token: state.token
+});
+
+export default connect(mapStateToProps)(withRouter(PrivateRoute));

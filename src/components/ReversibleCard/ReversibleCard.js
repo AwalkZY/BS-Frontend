@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {TimelineLite} from "gsap/all";
 import {Avatar, Badge, Button, Card, Descriptions, Divider, Icon, Tag} from "antd";
-import style from "../../pages/index/index.module.css";
+import style from "./ReversibleCard.module.css";
 
-const {Meta} = Card;
+const {Meta} = Card
 const ButtonGroup = Button.Group;
 
 class Detail extends Component{
@@ -95,7 +95,7 @@ export default class ReversibleCard extends Component {
                            src={item.base64Img}/>
                   </div>
               }
-              onDoubleClick={(e) => this.reverse()}
+              onDoubleClick={(e) => {this.reverse();}}
         >
             <Meta
                 avatar={<Avatar src={item.sellerAvatar}/>}
@@ -109,7 +109,7 @@ export default class ReversibleCard extends Component {
     );
 
     BackCard = (item) => (
-        <Card style={{height: 350, overflow: "auto"}} onDoubleClick={(e) => this.reverse()}>
+        <Card style={{height: 350, overflow: "auto"}} onDoubleClick={(e) => {this.reverse();}}>
             <Detail item={item}/>
         </Card>
     );

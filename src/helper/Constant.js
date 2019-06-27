@@ -1,0 +1,1 @@
+export const ApiRoot = 'http://localhost:8080';

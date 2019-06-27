@@ -1,31 +1,3 @@
-.appLogo{
-  height: 32px;
-}
-.brand{
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-  margin-left: 4px;
-}
-.menuBtn{
-  color: white;
-  height: 48px;
-}
-.username{
-  color: white;
-  font-size: 14px;
-  font-weight: bold;
-}
 .app, .layout{
   height: 100%;
-}
-
-@media screen and (max-width: 768px){
-  .hiddenSm{
-      display: none;
-  }
-  header{
-    padding-left: 25px !important;
-    padding-right: 25px !important;
-  }
 }

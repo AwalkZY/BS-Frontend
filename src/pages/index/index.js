@@ -12,8 +12,8 @@ import {
     Pagination, Empty
 } from "antd";
 import style from './index.module.css';
-import ReversibleCard from '../../components/reversibleCard/reversibleCard'
-import BookDrawer from '../../components/bookDrawer/bookDrawer';
+import ReversibleCard from '../../components/ReversibleCard/ReversibleCard'
+import BookDrawer from '../../components/BookDrawer/BookDrawer';
 
 const {Title} = Typography;
 const ButtonGroup = Button.Group;

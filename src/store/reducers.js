@@ -1,4 +1,5 @@
 import {ADD_TOKEN, DEL_TOKEN, RD_MSG, TR_MSG, UT_MSG} from "./actions";
+import {combineReducers} from "redux";
 
 const initialState = {
     token: "",
@@ -44,6 +45,8 @@ function msgTracer(state = "", action) {
     }
 }
 
-export function mainReducer(state = initialState, action){
-
-}
+export const MainReducer = combineReducers({
+    token,
+    message,
+    msgTracer
+});

@@ -28,10 +28,6 @@ export default class BookDrawer extends Component{
         target : null
     };
 
-    constructor(props){
-        super(props);
-    }
-
     handleChange = info => {
         if (info.file.status === 'uploading') {
             this.setState({loading: true});
@@ -51,7 +47,6 @@ export default class BookDrawer extends Component{
 
     showDrawer = (record = null) => {
         if (record !== null) {
-            console.log(record);
             this.setState({
                 target: record
             })

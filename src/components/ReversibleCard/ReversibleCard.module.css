@@ -1,0 +1,8 @@
+@media screen and (max-width: 768px){
+    .hiddenSm{
+        display: none !important;
+    }
+}
+.coverImg{
+    height: inherit;
+}
