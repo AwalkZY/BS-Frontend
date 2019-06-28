@@ -4,7 +4,6 @@ import qs from "qs";
 import {message} from "antd";
 
 export function Get(url, params = {}, header = {}){
-    message.success("通信错误，请联系管理员检查。");
     return axios.get(ApiRoot + url, qs.stringify(params), {
         header: header
     }).catch(() =>

@@ -8,12 +8,14 @@ import {
     Row,
     Col,
     Tooltip,
+    message,
     Icon,
     Pagination, Empty
 } from "antd";
 import style from './index.module.css';
 import ReversibleCard from '../../components/ReversibleCard/ReversibleCard'
 import BookDrawer from '../../components/BookDrawer/BookDrawer';
+import {Get} from "../../helper/Api";
 
 const {Title} = Typography;
 const ButtonGroup = Button.Group;
@@ -24,24 +26,21 @@ class Index extends Component {
     state = {
         field: "",
         visible: false,
-        loading: false
+        loading: false,
+        bookList: []
     };
 
-    bookList = [
-        {
-            id: 1,
-            name: "三国演义",
-            isbn: "9780136019701",
-            seller: "小张",
-            original: 166,
-            current: 16,
-            sellerAvatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-            base64Img: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3542693902,1170137576&fm=26&gp=0.jpg",
-            description: "一本好书！九五成新",
-            tags: ["文学类", "历史类"],
-            status: 0
-        }
-    ];
+    componentDidMount(): void {
+        Get('/book',{},{
+
+        }).then(data => {
+            this.setState({
+                bookList: data["info"]
+            });
+            console.log(data["info"]);
+        }).catch(msg => message.error(msg));
+    }
+
     refBookDrawer = ref => {
         this.bookDrawer = ref
     };
@@ -81,10 +80,10 @@ class Index extends Component {
                 <Divider/>
                 <div className={style.display}>
                     {
-                        this.bookList.length !== 0 ? (
+                        this.state.bookList.length !== 0 ? (
                             <Row gutter={24}>
                                 {
-                                    this.bookList.map((item) => {  //todo: BookList放到store里
+                                    this.state.bookList.map((item) => {  //todo: 可以尝试放到store里
                                         return (
                                             <Col xs={24} sm={12} md={6} lg={6} style={{marginTop: 12}} key={item.id}>
                                                 <ReversibleCard item={item}/>

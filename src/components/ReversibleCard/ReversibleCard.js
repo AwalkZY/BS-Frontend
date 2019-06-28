@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {TimelineLite} from "gsap/all";
-import {Avatar, Badge, Button, Card, Descriptions, Divider, Icon, Tag} from "antd";
+import {Avatar, Badge, Button, Card, Descriptions, Divider, Icon, Tag, Tooltip} from "antd";
 import style from "./ReversibleCard.module.css";
 
-const {Meta} = Card
+const {Meta} = Card;
 const ButtonGroup = Button.Group;
 
 class Detail extends Component{
@@ -12,29 +12,28 @@ class Detail extends Component{
             <div>
                 <Descriptions bordered column={1} size={"small"}>
                     <Descriptions.Item label="书名">
-                        活着
+                        {this.props.item.name}
                         <Divider type={"vertical"}/>
                         <Button href={"https://www.amazon.cn/s?k="+this.props.item.name+"&__mk_zh_CN=%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99&ref=nb_sb_noss"} size={"small"} >
                             <Icon type="amazon"/>
-                            <span className={style.hiddenSm}>转到Amazon</span>
+                            <span className={style.hiddenSm}>Amazon</span>
                         </Button>
                     </Descriptions.Item>
                     <Descriptions.Item label="价格">￥{this.props.item.current} / ￥{this.props.item.original}</Descriptions.Item>
                     <Descriptions.Item label="类别">
                         {
-                            this.props.item.tags.map(x => {
+                            this.props.item.tags.split(";").map(x => {
                                 return <Tag color="#108ee9">{x}</Tag>
                             })
                         }
                     </Descriptions.Item>
                     <Descriptions.Item label="状态">
                         {(() => {
-                            switch (this.props.item.status) {
-                                case 0: return <Badge status="success" text="可购买"/>;
-                                case 1: return <Badge status="processing" text="交易中"/>;
-                                case 2: return <Badge status="default" text="交易结束"/>;
-                                default: return <Badge status="error" text="状态错误"/>;
-                            }
+                            if (this.props.item.buyer === null) {
+                                return <Badge status="success" text="可购买"/>;
+                            } else if (this.props.item.buyer < 0) {
+                                return <Badge status="processing" text="交易中"/>;
+                            } else return <Badge status="default" text="交易结束"/>;
                         })()}
                     </Descriptions.Item>
                     <Descriptions.Item label="ISBN">
@@ -50,10 +49,12 @@ class Detail extends Component{
                     </Descriptions.Item>
                     <Descriptions.Item label="操作">
                         <ButtonGroup>
+                            <Tooltip placement={"bottom"} title={this.props.item.deliver === "offline" ? "线下交易购买" : "快递递送购买"}>
                             <Button type={"primary"} size={"small"} >
                                 <Icon type="shopping"/>
                                 <span className={style.hiddenSm}>购买</span>
                             </Button>
+                            </Tooltip>
                         </ButtonGroup>
                     </Descriptions.Item>
                 </Descriptions>
@@ -92,10 +93,11 @@ export default class ReversibleCard extends Component {
                   <div style={{textAlign: "center", height: 225}}>
                       <img alt="example"
                            className={style.coverImg}
-                           src={item.base64Img}/>
+                           src={item.image}/>
                   </div>
               }
-              onDoubleClick={(e) => {this.reverse();}}
+              onTouchStart={(e) => {this.reverse();}}
+              onMouseEnter={(e) => {this.reverse();}}
         >
             <Meta
                 avatar={<Avatar src={item.sellerAvatar}/>}
@@ -109,7 +111,7 @@ export default class ReversibleCard extends Component {
     );
 
     BackCard = (item) => (
-        <Card style={{height: 350, overflow: "auto"}} onDoubleClick={(e) => {this.reverse();}}>
+        <Card style={{height: 350, overflow: "auto"}} onTouchStart={(e) => {this.reverse();}} onMouseLeave={(e) => {this.reverse();}}>
             <Detail item={item}/>
         </Card>
     );

@@ -9,6 +9,7 @@ import {
     Row,
     Col,
     Tooltip,
+    message,
     Icon,
     Pagination,
     Tag,
@@ -19,6 +20,7 @@ import {
 } from "antd";
 import style from './need.module.css';
 import BookDrawer from '../../components/BookDrawer/BookDrawer';
+import {Get} from "../../helper/Api";
 
 const {Title} = Typography;
 const Search = Input.Search;
@@ -63,7 +65,7 @@ class NeedTable extends Component {
             dataIndex: 'tags',
             render: tags => (
                 <span>
-                    {tags.map(tag => {
+                    {tags.split(";").map(tag => {
                         let color = tag.length > 5 ? 'geekblue' : 'green';
                         if (tag === 'loser') {
                             color = 'volcano';
@@ -104,46 +106,23 @@ class NeedTable extends Component {
         },
     ];
 
-    data = [
-        {
-            key: '1',
-            name: '活着',
-            time: '2019-06-26',
-            tags: ['nice', 'developer'],
-            price: 100,
-            status: 0,
-            buyer: '小王'
-        },
-        {
-            key: '2',
-            name: '老人与海',
-            time: '2019-06-27',
-            tags: ['nice', 'developer', 'what?'],
-            price: 50,
-            status: 1,
-            buyer: '小李'
-        },{
-            key: '3',
-            name: '红楼梦',
-            time: '2019-09-26',
-            tags: ['developer'],
-            price: 1000,
-            status: 2,
-            buyer: '小张'
-        },{
-            key: '4',
-            name: '汤姆索亚历险记',
-            time: '2016-06-26',
-            tags: [],
-            price: 1050,
-            status: 0,
-            buyer: '小赵'
-        }
-    ];
+    state = {
+        needData : []
+    };
+
+    componentDidMount(): void {
+        Get("/need",{},{
+
+        }).then(data => {
+            this.setState({
+                needData: data["info"]
+            })
+        }).catch(msg => message.error(msg));
+    }
 
     render() {
         return (
-            <Table columns={this.columns} dataSource={this.data} />
+            <Table columns={this.columns} locale={{emptyText:'暂无数据'}} dataSource={this.state.needData} />
         )
     }
 }

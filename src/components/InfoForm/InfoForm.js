@@ -22,7 +22,7 @@ const InfoForm = Form.create({name: 'register_form'})(
                             })(<Input
                                 prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                 placeholder="用户名"
-                            />,)}
+                            />)}
                         </Form.Item>
                         <Form.Item label="密码">
                             {getFieldDecorator('password', {
