@@ -1,10 +1,11 @@
-import {ADD_TOKEN, DEL_TOKEN, RD_MSG, TR_MSG, UT_MSG} from "./actions";
+import {ADD_AVATAR, ADD_TOKEN, DEL_TOKEN, RD_MSG, TR_MSG, UT_MSG} from "./actions";
 import {combineReducers} from "redux";
 
 const initialState = {
     token: "",
     message: [],
-    msgTracer: ""
+    msgTracer: "",
+    avatar: ""
 };
 
 function token(state = "", action) {
@@ -45,8 +46,18 @@ function msgTracer(state = "", action) {
     }
 }
 
+function avatar(state = "", action) {
+    switch (action.type) {
+        case ADD_AVATAR:
+            return action.avatar;
+        default:
+            return state;
+    }
+}
+
 export const MainReducer = combineReducers({
     token,
     message,
-    msgTracer
+    msgTracer,
+    avatar
 });

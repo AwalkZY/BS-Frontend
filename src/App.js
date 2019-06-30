@@ -5,14 +5,16 @@ import style from './App.module.css';
 import Index from './pages/index'
 import Message from './pages/message/message'
 import Need from './pages/need/need'
-import {Provider} from 'react-redux'
+import {connect, Provider} from 'react-redux'
 import {createStore} from 'redux'
 import {MainReducer} from "./store/reducers";
 import PrivateRoute from './middlewares/auth'
 import Login from "./pages/login/login";
 import MainHeader from "./components/MainHeader/MainHeader";
+import {addAvatar, addToken} from "./store/actions";
 
 const store = createStore(MainReducer);
+window.$store = store;
 const {Content, Footer} = Layout;
 
 const MainLayout = () => (
@@ -30,7 +32,7 @@ const MainLayout = () => (
     </Layout>
 );
 
-export default class App extends Component {
+class App extends Component {
     render() {
         return (
             <Provider store={store}>
@@ -46,3 +48,5 @@ export default class App extends Component {
         );
     }
 }
+
+export default App;

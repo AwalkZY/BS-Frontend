@@ -2,7 +2,7 @@ import React from "react";
 import {Post} from "../../helper/Api";
 import {Button, Checkbox, Form, Icon, Input, message} from "antd";
 import {withRouter} from "react-router-dom";
-import {addToken} from "../../store/actions";
+import {addToken, addAvatar} from "../../store/actions";
 import {connect} from "react-redux";
 
 class LoginFormCore extends React.Component {
@@ -23,8 +23,14 @@ class LoginFormCore extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 Post('/session', values).then(data => {
-                    if (this.props.form.getFieldValue("remember")) window.sessionStorage.setItem("token", data["token"]);
+                    if (this.props.form.getFieldValue("remember"))
+                    {
+                        window.sessionStorage.setItem("token", data["token"]);
+                        window.sessionStorage.setItem("avatar", data["avatar"]);
+                    }
+                    console.log(data);
                     this.props.addToken(data["token"]);
+                    this.props.addAvatar(data["avatar"]);
                     const {history} = this.props;
                     message.success('登录成功');
                     history.replace("/index");
@@ -67,11 +73,6 @@ class LoginFormCore extends React.Component {
                         valuePropName: 'checked',
                         initialValue: true,
                     })(<Checkbox>记住我的登录状态</Checkbox>)}
-                    <Button type={"link"} className="login-form-forgot">
-                        忘记密码
-                    </Button>
-                </Form.Item>
-                <Form.Item>
                     <Button.Group>
                         <Button type="primary" htmlType="submit">
                             登录
@@ -91,7 +92,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    addToken: (token) => dispatch(addToken(token))
+    addToken: (token) => dispatch(addToken(token)),
+    addAvatar: (avatar) => dispatch(addAvatar(avatar))
 });
 
 const LoginForm = (

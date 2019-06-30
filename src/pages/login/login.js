@@ -40,6 +40,7 @@ class Login extends React.Component {
     handleCreate = () => {
         const {form} = this.formRef.props;
         form.validateFields((err, values) => {
+            console.log(values);
             if (err) {
                 return;
             }

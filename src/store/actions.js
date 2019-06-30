@@ -3,9 +3,14 @@ export const DEL_TOKEN = 'DEL_TOKEN';
 export const RD_MSG = 'RD_MSG';
 export const TR_MSG = 'TR_MSG';
 export const UT_MSG = 'UT_MSG';
+export const ADD_AVATAR = 'ADD_AVATAR';
 
 export function addToken(token) {
     return { type: ADD_TOKEN, token }
+}
+
+export function addAvatar(avatar) {
+    return { type: ADD_AVATAR, avatar }
 }
 
 export function delToken() {

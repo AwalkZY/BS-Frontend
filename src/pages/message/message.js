@@ -1,9 +1,57 @@
 import React, {Component} from 'react';
-import {List, Avatar, Card, Typography, Divider} from "antd";
+import {List, Avatar, Card, Typography, Divider, message, Button} from "antd";
 import style from './message.module.css';
+import {Get, Post} from "../../helper/Api";
+import MessageModal from "../../components/MessageModal/MessageModal";
+
 const {Title} = Typography;
 
 class Message extends Component{
+    state = {
+        messages: [],
+        visible: false
+    };
+
+    flushMessage(){
+        Get('/message',{},{}).then(data => this.setState({
+            messages: data["info"]
+        })).catch(msg => message.error(msg));
+    }
+
+    componentDidMount(): void {
+        // setInterval(() => this.flushMessage(),2000);
+        this.flushMessage();
+    }
+
+    saveFormRef = formRef => {
+        this.formRef = formRef;
+    };
+
+    showModal = () => {
+        this.setState({visible: true});
+    };
+
+    handleCancel = () => {
+        this.setState({visible: false});
+    };
+
+    handleCreate = () => {
+        const {form} = this.formRef.props;
+        form.validateFields((err, values) => {
+            console.log(values);
+            if (err) {
+                return;
+            }
+            Post('/message', values).then(data => {
+                this.setState({visible: false});
+                message.success("发送成功");
+                form.resetFields();
+            }).catch(msg => {
+                message.error(msg);
+            });
+        });
+    };
+
     render() {
         return (
             <div className={style.main}>
@@ -13,40 +61,27 @@ class Message extends Component{
                 <Divider/>
                 <Card className={style.display}><List
                     itemLayout="horizontal"
-                    dataSource={data}
+                    dataSource={this.state.messages}
                     renderItem={item => (
-                        <List.Item actions={[<a>标为已读/删除信息</a>,<a>回复</a>,<a>追踪</a>]}>
+                        /*<Button type={"link"}>标为已读</Button>,*/
+                        <List.Item actions={[<Button type={"link"} onClick={this.showModal}>回复</Button>]}>
                             <List.Item.Meta
-                                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                title={<a href="https://ant.design">{item.title}</a>}
-                                description={item.message}
+                                avatar={item.direction ? <Avatar src={item.receiverAvatar} /> : <Avatar src={item.senderAvatar} />}
+                                title={item.direction ? "我 发送给 " + item.receiverName : item.senderName + "发送给 我"}
+                                description={item.content}
                             />
-                            <span>已阅读</span>
+                            {/*<span>已阅读</span>*/}
                         </List.Item>
                     )}
                 /></Card>
+                <MessageModal
+                    wrappedComponentRef={this.saveFormRef}
+                    visible={this.state.visible}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
+                />
             </div>
         );
     }
 }
-
-const data = [
-    {
-        title: '小赵',
-        message: '你好，请问什么时候可以完成图书交易？'
-    },
-    {
-        title: '小李',
-        message: '你好，请问什么时候可以完成图书交易？'
-    },
-    {
-        title: '小王',
-        message: '你好，请问什么时候可以完成图书交易？'
-    },
-    {
-        title: '小张',
-        message: '你好，请问什么时候可以完成图书交易？'
-    },
-];
-
 export default Message;

@@ -6,7 +6,7 @@ import {Link, withRouter} from "react-router-dom";
 import React from "react";
 import InfoForm from "../InfoForm/InfoForm";
 import {Post} from "../../helper/Api";
-import {delToken} from "../../store/actions"
+import {addAvatar, delToken, addToken} from "../../store/actions"
 import {connect} from "react-redux";
 
 const {Header} = Layout;
@@ -15,6 +15,15 @@ class MainHeader extends React.Component{
     state = {
         visible: false
     };
+
+    componentWillMount(): void {
+        if (!!window.sessionStorage.getItem("avatar")) {
+            this.props.addAvatar(window.sessionStorage.getItem("avatar"));
+        }
+        if (!!window.sessionStorage.getItem("token")) {
+            this.props.addToken(window.sessionStorage.getItem("token"));
+        }
+    }
 
     logout = () => {
         this.props.delToken();
@@ -25,10 +34,6 @@ class MainHeader extends React.Component{
 
     saveFormRef = formRef => {
         this.formRef = formRef;
-    };
-
-    showModal = () => {
-        this.setState({visible: true});
     };
 
     handleCancel = () => {
@@ -53,13 +58,6 @@ class MainHeader extends React.Component{
 
     MyMenu = (
         <Menu>
-            <Menu.Item>
-                <Button type={"link"} style={{color: "black"}} onClick={this.showModal}>
-                    <Icon type="edit"/>
-                    <Divider type={"vertical"}/>
-                    修改资料
-                </Button>
-            </Menu.Item>
             <Menu.Item>
                 <Button type={"link"} style={{color: "black"}} onClick={this.logout}>
                     <Icon type="logout"/>
@@ -103,7 +101,7 @@ class MainHeader extends React.Component{
                                 <Link to={"/message"}>
                                     <Icon type="mail"/>
                                     邮件消息
-                                    <Badge count={6} style={{marginLeft: 8}}/>
+                                    {/*<Badge count={6} style={{marginLeft: 8}}/>*/}
                                 </Link>
                             </Menu.Item>
                         </Menu>
@@ -111,11 +109,11 @@ class MainHeader extends React.Component{
                     <Col span={4}>
                         <Dropdown overlay={this.MyMenu}>
                             <div style={{float: "right"}}>
-                                <Avatar shape="square" icon="user"/>
-                                <Divider type={"vertical"} className={style.hiddenSm}/>
-                                <span className={ConcatClasses(style.username, style.hiddenSm)}>
-                                     Desmond
-                            </span>
+                                {!this.props.avatar ? <Avatar shape="square" icon="user"/> : <Avatar src={this.props.avatar} shape={"square"}/>}
+                            {/*    <Divider type={"vertical"} className={style.hiddenSm}/>*/}
+                            {/*    <span className={ConcatClasses(style.username, style.hiddenSm)}>*/}
+                            {/*         Desmond*/}
+                            {/*</span>*/}
                             </div>
                         </Dropdown>
                     </Col>
@@ -133,11 +131,14 @@ class MainHeader extends React.Component{
 }
 
 const mapStateToProps = state => ({
-    token: state.token
+    token: state.token,
+    avatar: state.avatar
 });
 
 const mapDispatchToProps = dispatch => ({
-    delToken: () => dispatch(delToken())
+    delToken: () => dispatch(delToken()),
+    addToken: (token) => dispatch(addToken(token)),
+    addAvatar: (image) => dispatch(addAvatar(image))
 });
 
 export default connect(
